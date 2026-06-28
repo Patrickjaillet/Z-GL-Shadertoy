@@ -14,6 +14,10 @@
   <img alt="Offline" src="https://img.shields.io/badge/offline-first-green">
 </p>
 
+<p align="center">
+  <img src="docs/zgl.png" alt="Z-GL Shadertoy screenshot" width="900">
+</p>
+
 ---
 
 ## What is Z-GL Shadertoy?
