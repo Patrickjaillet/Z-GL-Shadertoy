@@ -5,132 +5,128 @@
 <h1 align="center">Z-GL Shadertoy</h1>
 
 <p align="center">
-  <strong>Éditeur de shaders Shadertoy temps réel — 100 % hors-ligne, zéro WASM, zéro compte, zéro cloud.</strong><br>
-  Pour les artistes génératifs, les chercheurs en rendu et toute personne qui écrit des shaders au format Shadertoy.
+  <strong>Real-time Shadertoy shader editor — 100% offline, no account, no cloud.</strong><br>
+  For generative artists, graphics researchers, and anyone who writes shaders.
 </p>
 
 <p align="center">
-  <img alt="Plateforme" src="https://img.shields.io/badge/Windows-desktop-blue">
+  <img alt="Platform" src="https://img.shields.io/badge/Windows-desktop-blue">
   <img alt="Offline" src="https://img.shields.io/badge/offline-first-green">
-  <img alt="Licence" src="https://img.shields.io/badge/licence-propriétaire-red">
 </p>
 
 ---
 
-## Qu'est-ce que Z-GL Shadertoy ?
+## What is Z-GL Shadertoy?
 
-Z-GL Shadertoy est un éditeur de shaders GLSL desktop, **100 % dédié au format Shadertoy** : écrivez une fonction `mainImage`, utilisez les uniforms standards (`iTime`, `iResolution`, `iMouse`, `iChannel0-3`…), branchez des passes Buffer A-D / Cube / Sound, et importez/exportez directement depuis/vers shadertoy.com — le tout sans connexion internet et sans aucun module WebAssembly.
-
-L'application n'embarque **aucun** moteur de rendu alternatif (pas de WebGPU, pas de WGSL), aucun éditeur de node-graph, aucun moteur de particules, aucun SDK de plugins/scripting, aucun protocole de contrôle matériel (MIDI/OSC/NDI/Spout/DMX), aucune édition collaborative, aucune télémétrie. C'est un outil simple et focalisé.
+Z-GL Shadertoy is a desktop GLSL shader editor built entirely around the Shadertoy format. Write a `mainImage` function, use the standard uniforms (`iTime`, `iResolution`, `iMouse`, `iChannel0–3`…), wire up Buffer A–D / Cube / Sound passes, and import or export directly to/from shadertoy.com — no internet connection required, no WebAssembly, no account.
 
 ---
 
-## Fonctionnalités
+## Features
 
-### Édition
+### Editor
 
-- **Éditeur Monaco** — coloration syntaxique GLSL ES, autocomplétion, documentation au survol, marqueurs d'erreur en direct, minimap, valeurs d'uniforms inline
-- **Sliders automatiques** — chaque `#define` ou `const float/int` de premier niveau devient un slider glissable, avec annulation/rétablissement (Ctrl+Z / Ctrl+Y)
-- **Bibliothèque de snippets** — extraits GLSL prêts à insérer (bruit, SDF, post-effets…)
-- **Documentation GLSL intégrée** — panneau de référence des fonctions et types GLSL ES
-- **Historique de versions** — chaque modification significative est conservée, restaurable depuis le panneau Version History
-- **Palette de commandes** — `Ctrl+,` ou le bouton dédié pour accéder à tous les réglages
+- **Monaco editor** — GLSL syntax highlighting, autocomplete, hover documentation, live error markers, minimap
+- **Automatic sliders** — every top-level `#define` or `const float/int` becomes a draggable slider with undo/redo (Ctrl+Z / Ctrl+Y)
+- **Live `#define` annotations** — slider values are shown inline in the editor when they differ from the code
+- **Snippet library** — categorized collection of ready-to-insert GLSL functions (noise, SDF, lighting, color, math, texturing)
+- **Right-click code actions** — extract any selection as a reusable snippet, auto-generate a comment header for a function
+- **Autocomplete from your library** — all your saved snippets appear in the editor's autocomplete suggestions
+- **Version history** — significant edits are saved automatically and can be restored from the Version History panel
+- **Command palette** — `Ctrl+,` to open Settings, `Ctrl+Shift+P` for all actions
 
-### Rendu Shadertoy complet
+### Full Shadertoy rendering
 
-- **Multipass** — passes Image, Buffer A–D (avec feedback inter-frame), Cube A–F, et Sound
-- **Tous les uniforms standards** — `iResolution`, `iTime`, `iTimeDelta`, `iFrame`, `iMouse`, `iDate`, `iSampleRate`, `iChannel0-3`, `iChannelResolution`
-- **Tous les types de canaux (iChannel)** — image statique, vidéo, webcam, micro/fichier audio (FFT), cubemap, frame précédente (feedback), texture clavier, bruit procédural
+- **Multipass** — Image, Buffer A–D (with inter-frame feedback), Cube A–F, and Sound passes
+- **All standard uniforms** — `iResolution`, `iTime`, `iTimeDelta`, `iFrame`, `iMouse`, `iDate`, `iSampleRate`, `iChannel0–3`, `iChannelResolution`
+- **All channel types** — static image, video, webcam, audio/mic (FFT), cubemap, previous frame (feedback), keyboard texture, procedural noise
 
-### Outils d'assistance à l'écriture de shaders
+### Post-process effects
 
-- **Ray March Assistant** — détecte les patterns SDF/raymarching et propose un panneau de réglage (`MAX_STEPS`, `MAX_DIST`, `SURF_DIST`…)
-- **SDF Library + Visualizer + Composer** — bibliothèque de 35+ primitives SDF, 4 modes de visualisation (iso-distance, field, normals, step count), compositeur visuel de scène SDF
-- **LUT grading** — bibliothèque de LUTs intégrées + éditeur de courbes 1D + import `.cube`
-- **Panneau Modulation** — sources de modulation pour piloter dynamiquement vos paramètres
-- **Mode Daltonisme** — simulation Protanopie / Deutéranopie / Tritanopie en post-pass (`Ctrl+Shift+B`)
+- **Style layers** — stackable effects with per-layer blend mode and opacity: glitch, chromatic aberration, vignette, lens distortion, ASCII art, and more
+- **LUT color grading** — built-in LUT library + 1D curve editor + `.cube` file import (3D LUT)
+- **Colorblindness simulation** — Protanopia / Deuteranopia / Tritanopia as a live post-pass (`Ctrl+Shift+B`)
+- **WCAG contrast warning** — flags color combinations in your render that fail accessibility contrast thresholds
+- **UV warp effects** — camera shake, dolly zoom (Vertigo effect), and more, injectable directly into `mainImage`
 
-### Import / Export Shadertoy
+### Colors & themes
 
-- **Import ZIP** — glissez-déposez un export `.zip` depuis shadertoy.com : les passes Image/Buffer A–D/Sound/Cube sont détectées et reconstituées automatiquement
-- **Export format ShaderToy** — nettoie les déclarations d'uniforms/precision locales pour un collage direct dans l'éditeur shadertoy.com
-- **Export complet** — capture PNG, vidéo MP4/WebM (via `MediaRecorder` natif du navigateur, sans WASM/ffmpeg), GLSL pur/minifié, snippet Three.js, page HTML autonome, projet ZIP `.zgl`, sketch p5.js, format GLSL Sandbox
-- **Lien de partage** — sérialise le shader et les valeurs de sliders dans l'URL (hash compressé), y compris en version multi-passes (v2)
+- **Inline HSL color picker** — click any `vec3(r, g, b)` in the editor to open a color picker and edit in place
+- **IQ cosine palette** — one-click insertion of an Inigo Quilez palette snippet with your current values
+- **Custom themes** — save any combination of slider values + color palette as a named theme
+- **Theme interpolation** — smoothly blend between two themes
+- **Auto accent color** — extract the dominant color from the render and apply it to the UI automatically
 
-### Bureau natif (Windows, via Tauri)
+### 3D Camera
 
-- Fenêtre sans bordure avec barre de titre personnalisée, effet Mica/Acrylic
-- Icône dans la zone de notification (tray), liste des fichiers récents (MRU)
-- Boîtes de dialogue natives, glisser-déposer, association de fichiers `.glsl`/`.frag`
-- Watch de fichier externe (éditez dans VS Code/Neovim/Zed, prévisualisez en direct)
-- Sauvegarde automatique avec récupération après crash
+- **Camera panel** — position XYZ, target, FOV, near/far, all as sliders
+- **Presets** — Front, Top, Side, Isometric, 35mm cinematic, Wide 90°
+- **Keyframes** — record camera positions and play them back with smooth easing
+- **Fly mode** — navigate freely with WASD + Q/E
+- **XYZ gizmo** — clickable axis indicator in the viewport corner for instant view snapping
+- **Pick tool** — click anywhere on the canvas to read the UV coordinate at that point
+- **Automatic uniforms** — `iCameraPos`, `iCameraTarget`, and `iCameraFov` are passed to your shader automatically
 
-### Accessibilité et personnalisation
+### Raymarching & SDF tools
 
-- **Internationalisation** — 9 langues embarquées (EN, FR, DE, JA, ZH, PT-BR, ES, RU, KO), zéro appel réseau
-- **Thèmes** — plusieurs thèmes intégrés, panneau Settings dédié
-- **Layouts** — dispositions de panneaux sauvegardables
+- **Raymarching wizard** — generate a complete raymarching shader in one click: camera, SDF scene, normals, soft shadows, ambient occlusion, shading
+- **Extend existing raymarchers** — auto-detect what's already in your shader and inject only the missing parts (normals, soft shadows, AO)
+- **PBR materials** — inject Metallic/Roughness (GGX), Subsurface Scattering, or Iridescence shaders in one click
+- **SDF Library + Composer** — 35+ SDF primitives, boolean operations (smooth union, intersection, subtraction, morph), visual scene composer
+- **SDF Visualizer** — iso-distance heatmap, field view, normal visualization, and step count overlay
+- **Parameter tuning panel** — live `MAX_STEPS`, `MAX_DIST`, `SURF_DIST` sliders with instant shader update
 
-### Rendu headless (CLI)
+### SDF shapes
+
+- **Shape panel** — combine 2D/3D SDF shapes with feather, invert, and 2.5D extrude
+- **Custom Bézier shapes** — draw curves with an interactive editor
+- **SVG import** — paste an SVG path and convert it to an SDF mask automatically
+- **Time-driven animation** — shapes can rotate, pulse, or morph using `iTime`
+
+### Import / Export
+
+- **ZIP import** — drag and drop a `.zip` export from shadertoy.com; all passes are detected and reconstructed automatically
+- **shadertoy.com export** — cleans local uniform/precision declarations for direct paste into the shadertoy.com editor
+- **Full export** — PNG screenshot, MP4/WebM video, raw or minified GLSL, Three.js snippet, standalone HTML page, `.zgl` project ZIP, p5.js sketch, GLSL Sandbox format
+- **Share link** — encodes the shader and slider values into a compressed URL, including multipass shaders
+
+### Native desktop (Windows)
+
+- Borderless window with custom titlebar and Mica/Acrylic effect
+- System tray icon, recent files list (MRU)
+- Native file dialogs, drag & drop, `.glsl`/`.frag` file association
+- External file watch — edit in VS Code, Neovim, or any editor and preview live
+- Auto-save with crash recovery
+
+### Accessibility & customization
+
+- **9 built-in languages** — EN, FR, DE, JA, ZH, PT-BR, ES, RU, KO — no network calls
+- **Themes** — multiple built-in themes + Settings panel
+- **Modulation** — LFO, noise, audio-reactive, random, and envelope sources to drive any parameter dynamically
+
+### Headless rendering (CLI)
 
 ```bash
-# Rendu PNG d'un shader GLSL
 z-gl --headless --shader plasma.frag --out plasma.png
-
-# Voir toutes les options
 z-gl --headless --help
 ```
 
 ---
 
-## Pour qui ?
+## Who is it for?
 
-- Artistes génératifs qui écrivent ou collectionnent des shaders Shadertoy
-- Développeurs qui veulent un éditeur Shadertoy local, rapide, sans navigateur
-- Chercheurs en rendu qui veulent itérer sur du GLSL sans dépendance cloud
-
----
-
-## Compatibilité
-
-- **Plateforme** : Windows (app native via Tauri) ou navigateur (Chrome/Edge/Firefox récents)
-- **Aucune dépendance réseau** requise pour l'usage courant — tout fonctionne hors-ligne
-- **Aucun WASM** — tout le pipeline de rendu, d'export et d'analyse est en JavaScript/GLSL natif
+- Generative artists who write or collect Shadertoy shaders
+- Developers who want a fast, local Shadertoy editor without a browser
+- Graphics researchers who need to iterate on GLSL without a cloud dependency
 
 ---
 
-## Philosophie
+## Compatibility
 
-Z-GL Shadertoy fait un seul métier et le fait bien : être le meilleur éditeur Shadertoy local possible. Pas de fonctionnalités annexes qui alourdissent l'app ou complexifient la maintenance — si une fonctionnalité ne sert pas directement l'écriture, le test ou le partage de shaders au format Shadertoy, elle n'a pas sa place ici.
-
----
-
-## ⚙️ Dépannage
-
-### L'app de production s'ouvre mais ne s'initialise pas
-
-**Cause :** les appels `import('@tauri-apps/...')` dynamiques ne sont pas regroupés par Vite en production.
-
-**Solution :** tous les appels à l'API Tauri passent par `window.__TAURI__.*` directement, toujours disponible grâce à `withGlobalTauri: true` dans `tauri.conf.json`.
-
-### Erreur `EvalError` au démarrage de la version de production
-
-**Cause :** `@shaderfrog/glsl-parser` utilise `new Function()` en interne ; la CSP de Tauri doit donc inclure `'unsafe-eval'`.
-
-**Solution :** déjà configuré dans `tauri.conf.json` (`script-src 'self' 'unsafe-eval' ...`).
-
-### `tauri.conf.json` — `expected value at line 1 column 1`
-
-**Cause :** PowerShell (`ConvertTo-Json` / `Set-Content`) écrit un BOM UTF-8 que le parseur JSON de Tauri rejette.
-
-**Solution :** utilisez `[System.IO.File]::WriteAllText` avec un encodage sans BOM (le script `build.ps1` le fait automatiquement).
-
-### `tauri dev` plante avec `EBUSY: resource busy or locked`
-
-**Cause :** le watcher de fichiers de Vite tentait de surveiller `src-tauri/target/`, verrouillé par `cargo` pendant la compilation.
-
-**Solution :** `vite.config.js` ignore désormais `**/src-tauri/**` dans `server.watch.ignored`.
+- **Platform** — Windows (native desktop via Tauri) or any modern browser (Chrome, Edge, Firefox)
+- **No internet required** — everything works offline
+- **No WebAssembly** — the entire render, export, and analysis pipeline is native JavaScript/GLSL
 
 ---
 
-Voir [CHANGELOG.md](./CHANGELOG.md) pour l'historique complet des versions.
+See [CHANGELOG.md](./CHANGELOG.md) for the full version history.
