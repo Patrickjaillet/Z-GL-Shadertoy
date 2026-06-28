@@ -127,10 +127,6 @@ z-gl --headless --help
 
 ## Compatibility
 
-- **Platform** — Windows (native desktop via Tauri) or any modern browser (Chrome, Edge, Firefox)
+- **Platform** — Windows 10/11
 - **No internet required** — everything works offline
 - **No WebAssembly** — the entire render, export, and analysis pipeline is native JavaScript/GLSL
-
----
-
-See [CHANGELOG.md](./CHANGELOG.md) for the full version history.
